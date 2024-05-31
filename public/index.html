@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Precisa de ajuda?</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+    <button onclick="redirecionarParaPaginaAcessoAnalista()">Acesso Analista</button>
+</header>
+<main>
+    <div id="fale-conosco" class="product-container">
+        <h1>Precisa de ajuda?</h1>
+        <button onclick="redirecionarParaPaginaRelatarProblema()">Relatar um Problema</button>
+        <button onclick="redirecionarParaPaginaAcompanharResolucao()">Acompanhar Resolução</button>
+    </div>
+    <div id="faq" class="product-container">
+        <h1> Perguntas Frequentes </h1>
+        <div class="faq-items-container"> <div class="faq-item">
+            <h2>Como faço para entrar em contato com o suporte?</h2>
+            <p>Você pode abrir um ticket através do botão ‘Relatar um Problema’.
+                Lembre-se de incluir o máximo de informações possíveis.
+            </p>
+        </div>
+            <div class="faq-item">
+                <h2>Como acompanho o status dos meus tickets?</h2>
+                <p>Você pode acessa-lo informando o número do atendimento
+                    ou o CNPJ da sua empresa utilizando o botão 'Acompanhar resolução'.
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Acompanhar Resolução</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+    <button onclick="redirecionarParaPaginaAcessoAnalista()">Acesso Analista</button>
+</header>
+<main>
+  <div id="acompanhar-resolucao" class="product-container">
+    <h1>Acompanhar Resolução</h1>
+    <h2>Faça sua busca por CNPJ ou Número do Atendimento</h2>
+    <div class="busca-box">
+      <label for="numero-atendimento">Número de Atendimento:</label>
+      <input type="text" id="numero-atendimento" name="numero-atendimento">
+      <button type="button" onclick="buscarAtendimentoPorNumero()">Buscar por Número</button>
+    </div>
+    <div class="busca-box">
+      <label for="cnpj">CNPJ:</label>
+      <input type="text" id="cnpj" name="cnpj">
+      <button type="button" onclick="buscarAtendimentoPorCNPJ()">Buscar por CNPJ</button>
+    </div>
+    <div id="info-atendimento" style="display: none;">
+      <!-- Aqui serão exibidas as informações do atendimento -->
+    </div>
+  </div>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

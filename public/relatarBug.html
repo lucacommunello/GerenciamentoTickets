@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fale Conosco</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+    <button onclick="redirecionarParaPaginaAcessoAnalista()">Acesso Analista</button>
+</header>
+<main>
+  <div id="preencha-dados" class="product-container">
+    <h1>Fale Conosco</h1>
+    <form id="contatoForm" enctype="multipart/form-data">
+      <div>
+        <label for="nome_empresa">Nome da Empresa:</label>
+        <input type="text" id="nome_empresa" name="nome_empresa" required>
+      </div>
+      <div>
+        <label for="cnpj">CNPJ:</label>
+        <input type="text" id="cnpj" name="cnpj" required>
+      </div>
+      <div>
+        <label for="problema">Descreva seu problema:</label><br>
+        <textarea id="problema" name="problema" rows="4" cols="50" required></textarea>
+      </div>
+      <div>
+        <label for="anexo">Anexos:</label>
+        <input type="file" id="anexo" name="anexo">
+      </div>
+      <div>
+        <button type="button" onclick="enviarContato()">Enviar</button>
+      </div>
+    </form>
+  </div>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
