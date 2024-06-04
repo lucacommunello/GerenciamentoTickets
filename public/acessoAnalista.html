@@ -1,20 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Tickets</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carregar Dados</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function formatarData(dataString) {
+            const data = new Date(dataString);
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = String(data.getMonth() + 1).padStart(2, '0'); 
+            const ano = data.getFullYear();
+            const horas = String(data.getHours()).padStart(2, '0');
+            const minutos = String(data.getMinutes()).padStart(2, '0');
+        
+            return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+        }
+
+        $(document).ready(function() {
+            carregarTodosAtendimentos();
+            
+            const filterButton = document.getElementById('filterButtonSemAnalista');
+            filterButton.addEventListener('click', buscarAtendimentoSemAnalista);
+            
+            const showAllButton = document.getElementById('showAllButton');
+            showAllButton.addEventListener('click', carregarTodosAtendimentos);
+        });
+
+        function carregarTodosAtendimentos() {
+            $.ajax({
+                url: '/api/dados',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    const infoAtendimento = document.getElementById('data');
+                    infoAtendimento.innerHTML = ''; 
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        var table = '<table border="1"><tr><th>Número de Atendimento</th><th>CNPJ</th><th>Nome do Analista</th><th>Data da Última Atualização</th><th>Último Comentário</th><th>Data de Abertura</th></tr>';
+                        $.each(data, function(index, value) {
+                            table += '<tr>';
+                            table += '<td><a href="/detalhes.html?id=' + value.id + '">' + value.numero_atendimento + '</a></td>';
+                            table += '<td>' + value.cnpj + '</td>';
+                            table += '<td>' + (value.analista_nome || 'Nenhum') + '</td>';
+                            table += '<td>' + formatarData(value.data_ultima_atualizacao) + '</td>';
+                            table += '<td>' + (value.ultimo_comentario || 'Nenhum comentário') + '</td>';
+                            table += '<td>' + formatarData(value.data_abertura) + '</td>';
+                            table += '</tr>';
+                        });
+                        table += '</table>';
+                        infoAtendimento.innerHTML = table;
+                    } else {
+                        infoAtendimento.innerHTML = '<p>Nenhum atendimento encontrado.</p>';
+                    }
+                },
+                error: function(error) {
+                    console.log('Erro ao carregar dados', error);
+                }
+            });
+        }
+
+        function buscarAtendimentoSemAnalista() {
+            fetch('/api/tratativa_atendimento/analista_nome')
+                .then(response => response.json())
+                .then(data => {
+                    const infoAtendimento = document.getElementById('data');
+                    infoAtendimento.innerHTML = ''; 
+
+                    if (Array.isArray(data.atendimentos) && data.atendimentos.length > 0) {
+                        const table = document.createElement('table');
+                        table.innerHTML = `
+                            <tr>
+                                <th>Número de Atendimento</th>
+                                <th>CNPJ</th>
+                                <th>Data de Abertura</th>
+                                <th>Data da Última Atualização</th>
+                                <th>Nome do Analista</th>
+                                <th>Último Comentário</th>
+                            </tr>
+                        `;
+                        data.atendimentos.forEach(atendimento => {
+                            const dataAberturaFormatada = formatarData(atendimento.data_abertura);
+                            const dataUltimaAtualizacaoFormatada = formatarData(atendimento.data_ultima_atualizacao);
+                            const analista = atendimento.analista_nome || 'Nenhum';
+                            const comentario = atendimento.ultimo_comentario || 'Nenhum comentário';                    
+
+                            table.innerHTML += `
+                                <tr>
+                                    <td><a href="/detalhes.html?id=${atendimento.id}">${atendimento.numero_atendimento}</a></td>
+                                    <td>${atendimento.cnpj}</td>
+                                    <td>${dataAberturaFormatada}</td>
+                                    <td>${dataUltimaAtualizacaoFormatada}</td>
+                                    <td>${analista}</td>
+                                    <td>${comentario}</td>
+                                </tr>
+                            `;
+                        });
+                        table.setAttribute('border', '1');
+                        infoAtendimento.appendChild(table);
+                    } else {
+                        infoAtendimento.innerHTML = '<p>Nenhum atendimento sem analista encontrado.</p>';
+                    }
+                })
+                .catch(error => console.error('Erro ao buscar atendimentos sem analista:', error));
+        }
+    </script>
 </head>
 <body>
-  <header>
-  </header>
-  <main>
-    <div class="container">
-      <h1>Filtrar Chamados Sem Analista</h1>
-      <button id="filterButtonSemAnalista">Filtrar chamados sem analista</button>
-      <div id="info-atendimento" style="display:none;"></div>
-    </div>
-  </main>
-  <script src="script.js"></script>
+    <h1>Dados de Tratativa de Atendimento</h1>
+    <div id="data"></div>
+    <button id="filterButtonSemAnalista">Filtrar chamados sem analista</button>
+    <button id="showAllButton">Mostrar todos os chamados</button>
 </body>
 </html>

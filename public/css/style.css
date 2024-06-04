@@ -1,11 +1,9 @@
-/* General Styles */
 body {
     font-family: georgia;
     margin: 0;
     padding: 0;
 }
 
-/* Header Styles */
 header, #fale-conosco {
     background: linear-gradient(to right, #8c3454, #d45434);
     padding: 20px;
@@ -16,51 +14,50 @@ header, #fale-conosco {
 }
 
 header button {
-    background-color: #8c3454; /* Cor do botão */
-    color: #fff; /* Cor do texto do botão */
+    background-color: #8c3454; 
+    color: #fff; 
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-/* Content Styles */
 #faq, #preencha-dados, #acompanhar-resolucao {
     background-color: #FDFDFD;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     margin: 80px;
-    flex-direction: column; /* Coluna principal */
-    align-items: flex-start; /* Alinhar os itens ao início do eixo transversal */
+    flex-direction: column;
+    align-items: flex-start; 
 }
 
 #fale-conosco, #acompanhar-resolucao {
-    flex-direction: column; /* Distribua os itens verticalmente */
+    flex-direction: column;
 }
 
 #fale-conosco h1 {
     font-size: 2em;
-    color: #fff; /* Cor do texto específica */
+    color: #fff; 
     text-align: center;
-    margin: 10px 0; /* Ajuste a margem verticalmente para alterar a distância entre os botões */
+    margin: 10px 0; 
 }
 
 #fale-conosco button {
     background-color: #8c3454;
     color: #fff;
-    padding: 10px 20px; /* Primeiro vertical, segundo horizontal */
+    padding: 10px 20px; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin: 10px 0; /* Ajuste a margem verticalmente para alterar a distância entre os botões */
+    margin: 10px 0; 
 }
 
 #faq h1 {
     font-size: 1.6em;
     color: #333;
     text-align: center;
-    margin-bottom: 15px; /* Espaço entre h1 e os faq-items */
+    margin-bottom: 15px;
 }
 
 #faq h2 {
@@ -77,11 +74,11 @@ header button {
 }
 
 .faq-items-container {
-    display: flex; /* Utilizando flexbox */
-    flex-wrap: wrap; /* Itens quebram a linha conforme necessário */
-    justify-content: space-between; /* Espaço entre os itens */
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-between;
     width: 100%;
-    flex-direction: row; /* Alterado para "row" para colocar lado a lado */
+    flex-direction: row;
 }
 
 .faq-item {
@@ -89,9 +86,9 @@ header button {
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin: 10px; /* Espaço entre os itens */
-    flex: 1; /* Permitir que os itens expandam */
-    max-width: calc(50% - 20px); /* Largura máxima para evitar que ocupem toda a linha */
+    margin: 10px; 
+    flex: 1; 
+    max-width: calc(50% - 20px);
 }
 
 #preencha-dados h1, #acompanhar-resolucao h1 {
@@ -108,7 +105,7 @@ header button {
 }
 
 #preencha-dados form, #acompanhar-resolucao form {
-    margin: 20px 0; /* Aumente a margem superior e inferior */
+    margin: 20px 0; 
 }
 
 #preencha-dados form input[type="text"],
@@ -116,10 +113,10 @@ header button {
 #preencha-dados form textarea,
 #acompanhar-resolucao form input[type="text"] {
     border: 1px solid #ccc;
-    border-radius: 4px; /* Adiciona cantos arredondados */
-    padding: 8px; /* Adiciona espaço interno */
-    width: 100%; /* Garante que ocupem a largura total do contêiner */
-    box-sizing: border-box; /* Inclui o padding e a borda no cálculo da largura */
+    border-radius: 4px; 
+    padding: 8px; 
+    width: 100%; 
+    box-sizing: border-box;
     margin-bottom: 20px;
     margin-top: 10px;
 }
@@ -141,7 +138,6 @@ header button {
     color: white;
 }
 
-/* Estilos específicos para a página Acompanhar Resolução */
 #acompanhar-resolucao .busca-box {
     margin-bottom: 20px;
 }
