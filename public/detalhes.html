@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Atendimento</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="script.js"></script>
     <script>
         function formatarData(dataString) {
             const data = new Date(dataString);
@@ -19,19 +21,23 @@
 
         $(document).ready(function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');
+            const numeroAtendimento = urlParams.get('numero_atendimento');
 
             $('#commentForm').submit(function(e) {
                 e.preventDefault();
                 const comentario = $('#comentario').val();
-                const analistaNome = $('#analista_nome_input').val(); 
+                const analistaNome = $('#analista_nome_input').val();
+                
                 $.ajax({
                     url: '/api/comentario',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ id: id, comentario: comentario, analista_nome: analistaNome }), 
+                    data: JSON.stringify({ numero_atendimento: numeroAtendimento, comentario: comentario, analista_nome: analistaNome }),
                     success: function(response) {
                         alert('Comentário inserido com sucesso!');
+                        $('#comentario').val('');
+                        $('#analista_nome_input').val('');
+                        carregarComentarios(numeroAtendimento);
                     },
                     error: function(error) {
                         console.log('Erro ao inserir comentário', error);
@@ -39,42 +45,67 @@
                 });
             });
 
-            $.ajax({
-                url: '/api/dados/' + id,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    console.log('Dados do atendimento:', data); 
-                    $('#numero_atendimento').text(data.numero_atendimento);
-                    $('#cnpj').text(data.cnpj);
-                    $('#analista_nome').text(data.analista_nome);
-                    $('#data_ultima_atualizacao').text(formatarData(data.data_ultima_atualizacao));
-                    $('#ultimo_comentario').text(data.ultimo_comentario);
-                    $('#data_abertura').text(formatarData(data.data_abertura));
-                },
-                error: function(error) {
-                    console.log('Erro ao carregar dados do atendimento', error);
-                }
-            });
+            function carregarComentarios(numeroAtendimento) {
+                $.ajax({
+                    url: '/api/tratativa_atendimento/numero/' + numeroAtendimento,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log('Dados do atendimento:', data);
+                        if (data.success) {
+                            const atendimento = data.atendimento;
+                            $('#numero_atendimento').text(atendimento.numero_atendimento);
+                            $('#cnpj').text(atendimento.cnpj);
+                            $('#analista_nome').text(atendimento.analista_nome);
+                            $('#data_ultima_atualizacao').text(formatarData(atendimento.data_ultima_atualizacao));
+                            $('#ultimo_comentario').text(atendimento.ultimo_comentario);
+                            $('#data_abertura').text(formatarData(atendimento.data_abertura));
+                            mostrarComentarios(atendimento.comentarios);
+                        } else {
+                            alert('Nenhum atendimento encontrado para o número fornecido.');
+                            $('#comentarios').empty(); 
+                        }
+                    },
+                    error: function(error) {
+                        console.log('Erro ao carregar dados do atendimento', error);
+                    }
+                });
+            }
+
+            function mostrarComentarios(comentarios) {
+                $('#comentarios').empty();
+                comentarios.forEach(function(comentario) {
+                    $('#comentarios').append('<p><strong>' + comentario.analista_nome + ':</strong> ' + comentario.comentario + ' <em>(' + formatarData(comentario.data_comentario) + ')</em></p>');
+                });
+            }
+
+            carregarComentarios(numeroAtendimento);
         });
     </script>
 </head>
 <body>
+<header>
+    <button onclick="redirecionarParaPaginaAcessoAnalista()">Todos os tickets</button>
+</header>
+<div id="dados-tickets" class="product-container">
     <h1>Detalhes do Atendimento</h1>
-    <div>
-        <p><strong>Número de Atendimento:</strong> <span id="numero_atendimento"></span></p>
-        <p><strong>CNPJ:</strong> <span id="cnpj"></span></p>
-        <p><strong>Nome do Analista:</strong> <span id="analista_nome"></span></p>
-        <p><strong>Data da Última Atualização:</strong> <span id="data_ultima_atualizacao"></span></p>
-        <p><strong>Último Comentário:</strong> <span id="ultimo_comentario"></span></p>
-        <p><strong>Data de Abertura:</strong> <span id="data_abertura"></span></p>
-    </div>
+    <p><strong>Número de Atendimento:</strong> <span id="numero_atendimento"></span></p>
+    <p><strong>CNPJ:</strong> <span id="cnpj"></span></p>
+    <p><strong>Nome do Analista:</strong> <span id="analista_nome"></span></p>
+    <p><strong>Data da Última Atualização:</strong> <span id="data_ultima_atualizacao"></span></p>
+    <p><strong>Último Comentário:</strong> <span id="ultimo_comentario"></span></p>
+    <p><strong>Data de Abertura:</strong> <span id="data_abertura"></span></p>
     <form id="commentForm">
-        <label for="analista_nome_input">Nome do Analista:</label>
-        <input type="text" id="analista_nome_input" name="analista_nome_input" required><br>
-        <label for="comentario">Adicionar Comentário:</label>
+        <label for="analista_nome_input"><strong>Nome do Analista:</strong></label>
+        <input type="text" id="analista_nome_input" name="analista_nome_input" required><br><br>
+        <label for="comentario"><strong>Adicionar Comentário:</strong></label>
         <textarea id="comentario" name="comentario" required></textarea>
         <button type="submit">Enviar</button>
     </form>
+</div>
+<div id="h2">
+<h2>Comentários</h2>
+</div>
+<div id="comentarios"></div>
 </body>
 </html>

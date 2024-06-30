@@ -6,6 +6,7 @@
     <title>Carregar Dados</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     <script>
         function formatarData(dataString) {
             const data = new Date(dataString);
@@ -41,7 +42,7 @@
                         var table = '<table border="1"><tr><th>Número de Atendimento</th><th>CNPJ</th><th>Nome do Analista</th><th>Data da Última Atualização</th><th>Último Comentário</th><th>Data de Abertura</th></tr>';
                         $.each(data, function(index, value) {
                             table += '<tr>';
-                            table += '<td><a href="/detalhes.html?id=' + value.id + '">' + value.numero_atendimento + '</a></td>';
+                            table += '<td><a href="/detalhes.html?numero_atendimento=' + value.numero_atendimento + '">' + value.numero_atendimento + '</a></td>';
                             table += '<td>' + value.cnpj + '</td>';
                             table += '<td>' + (value.analista_nome || 'Nenhum') + '</td>';
                             table += '<td>' + formatarData(value.data_ultima_atualizacao) + '</td>';
@@ -88,7 +89,7 @@
 
                             table.innerHTML += `
                                 <tr>
-                                    <td><a href="/detalhes.html?id=${atendimento.id}">${atendimento.numero_atendimento}</a></td>
+                                    <td><a href="/detalhes.html?numero_atendimento=${atendimento.numero_atendimento}">${atendimento.numero_atendimento}</a></td>
                                     <td>${atendimento.cnpj}</td>
                                     <td>${dataAberturaFormatada}</td>
                                     <td>${dataUltimaAtualizacaoFormatada}</td>
@@ -108,6 +109,9 @@
     </script>
 </head>
 <body>
+<header>
+</header>
+    <div id="dados-tickets" class="product-container">
     <h1>Dados de Tratativa de Atendimento</h1>
     <div id="data"></div>
     <button id="filterButtonSemAnalista">Filtrar chamados sem analista</button>
